@@ -23,9 +23,7 @@ app.use('/api/users' , users );
 app.use('/api/orders' , orders );
 app.use('/api/upload' , upload);
 
-if(process.env.NODE_ENV === 'devlopment'){
-    app.use(morgan('dev'))
-}
+
 
 const __dirname = path.resolve()
 
