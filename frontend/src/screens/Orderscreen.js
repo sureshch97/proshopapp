@@ -75,7 +75,7 @@ const OrderScreen = ({ match }) => {
             if (!window.paypal) {
                 addPayPalScript()
             } else {
-                setsdkReady(false)
+                setsdkReady(true)
             }
 
         }
