@@ -201,7 +201,7 @@ const OrderScreen = ({ match }) => {
 
                                 <ListGroup.Item>
                                     {loadingPay && <Loader />}
-                                     (
+                                     
                                         <PayPalButton
                                             amount={order.totalPrice}
                                             onSuccess={successPaymentHandler}
