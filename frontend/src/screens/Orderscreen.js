@@ -27,7 +27,7 @@ const OrderScreen = ({ match }) => {
     const { loading: loadingPay, success: successPay } = orderPay;
 
     const orderDeliver = useSelector(state => state.orderDeliver);
-    const { loading: loadingDeliver, success: successDeliver } = orderPay;
+    const { loading: loadingDeliver, success: successDeliver } = orderDeliver;
 
 
     const userLogin = useSelector(state => state.userLogin);
@@ -66,7 +66,7 @@ const OrderScreen = ({ match }) => {
         }
 
 
-        if (!order || successPay || successDeliver) {
+        if (!order || successPay || successDeliver || order._id !== orderId) {
             dispatch({ type: ORDER_PAY_RESET });
             dispatch({ type: ORDER_DELIVER_RESET });
             dispatch(getOrderDetails(orderId));
@@ -74,6 +74,8 @@ const OrderScreen = ({ match }) => {
 
             if (!window.paypal) {
                 addPayPalScript()
+            } else {
+                setsdkReady(false)
             }
 
         }
@@ -81,7 +83,8 @@ const OrderScreen = ({ match }) => {
 
         // eslint-disable-next-line
         // changed object dependencies inorder to get rid of zoid error in paypal
-    }, [dispatch, order, successPay, successDeliver]);
+    }, [dispatch, order, orderId, successPay, successDeliver]);
+
 
     const deliverHandeler = () => {
 
@@ -108,10 +111,9 @@ const OrderScreen = ({ match }) => {
 
                             <p>
                                 <strong>Address:</strong>
-                                {order.shippingAddress.address},
-                                {order.shippingAddress.city}{' '}
-                                {order.shippingAddress.postalCode},{' '}
-                                {order.shippingAddress.country}
+                                {order.shippingAddress[0].address}, {order.shippingAddress[0].city}{' '}
+                                {order.shippingAddress[0].postalCode},{' '}
+                                {order.shippingAddress[0].country}
                             </p>
                             {order.isDelivered ?
                                 <Message variant='success'>Delivered on {order.deliveredAt}</Message> :
@@ -209,12 +211,12 @@ const OrderScreen = ({ match }) => {
                                     )}
                                 </ListGroup.Item>
                             )}
-                            {loadingDeliver && <Loader />}
+                           
                             {userInfo.isAdmin && order.ispaid && !order.isDelivered && (
                                 <ListGroup.Item>
                                     <Button type='button' className='btn btn-block' onClick={deliverHandeler}>
                                         Mark as Delivered
-                                   </Button>
+                                    </Button>
                                 </ListGroup.Item>
                             )}
 

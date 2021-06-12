@@ -1,4 +1,4 @@
-import { USER_DELETE_FAIL, USER_DELETE_REQUEST, USER_DELETE_SUCCESS, USER_DETAILS_FAIL, USER_DETAILS_REQUEST, USER_DETAILS_SUCCESS, USER_LIST_FAIL, USER_LIST_REQUEST, USER_LIST_RESET, USER_LIST_SUCCESS, USER_LOGIN_FAIL, USER_lOGIN_FAIL, USER_LOGIN_REQUEST, USER_lOGIN_REQUEST, USER_LOGIN_SUCCESS, USER_lOGIN_SUCCESS, USER_LOGOUT, USER_lOGOUT, USER_RIGESTER_FAIL, USER_RIGESTER_REQUEST, USER_RIGESTER_SUCCESS, USER_UPDATE_FAIL, USER_UPDATE_PROFILE_FAIL, USER_UPDATE_PROFILE_REQUEST, USER_UPDATE_PROFILE_RESET, USER_UPDATE_PROFILE_SUCCESS, USER_UPDATE_REQUEST, USER_UPDATE_RESET, USER_UPDATE_SUCCESS } from '../constants/userConstants'
+import { USER_DELETE_FAIL, USER_DELETE_REQUEST, USER_DELETE_SUCCESS, USER_DETAILS_FAIL, USER_DETAILS_REQUEST, USER_DETAILS_SUCCESS, USER_LIST_FAIL, USER_LIST_REQUEST, USER_LIST_RESET, USER_LIST_SUCCESS, USER_LOGIN_FAIL, USER_lOGIN_FAIL, USER_LOGIN_REQUEST, USER_lOGIN_REQUEST, USER_LOGIN_SUCCESS, USER_lOGIN_SUCCESS, USER_LOGOUT, USER_lOGOUT, USER_RIGESTER_FAIL, USER_RIGESTER_REQUEST, USER_RIGESTER_SUCCESS, USER_UPDATED_PROFILE_FAIL, USER_UPDATED_PROFILE_RESET, USER_UPDATED_PROFILE_SUCCESS, USER_UPDATED__PROFILE_REQUEST, USER_UPDATE_FAIL, USER_UPDATE_PROFILE_FAIL, USER_UPDATE_PROFILE_REQUEST, USER_UPDATE_PROFILE_RESET, USER_UPDATE_PROFILE_SUCCESS, USER_UPDATE_REQUEST, USER_UPDATE_RESET, USER_UPDATE_SUCCESS } from '../constants/userConstants'
 
 
 export const userLoginReducer = (state = {}, action) => {
@@ -42,6 +42,7 @@ export const userRigesterReducer = (state = {}, action) => {
         case USER_RIGESTER_SUCCESS:
             return {
                 loading: false,
+                success:true,
                 userInfo: action.payload
             }
         case USER_RIGESTER_FAIL:
@@ -66,6 +67,7 @@ export const userDetailsReducer = (state = { user: {} }, action) => {
 
         case USER_DETAILS_REQUEST:
             return {
+                ...state,
                 loading: true,
 
             }
@@ -109,9 +111,7 @@ export const userUpdateProfileReducer = (state = {}, action) => {
                 error: action.payload
             }
         case USER_UPDATE_PROFILE_RESET:
-            return {
-
-            }
+            return {}
 
         default:
             return state;
@@ -209,6 +209,37 @@ export const UpdateuserReducer = (state = { user: {} }, action) => {
             return {
 
             }
+
+        default:
+            return state;
+    }
+}
+
+
+
+
+export const userUpdatedProfileReducer = (state = {}, action) => {
+
+    switch (action.type) {
+
+        case USER_UPDATED__PROFILE_REQUEST:
+            return {
+                loading: true,
+
+            }
+        case USER_UPDATED_PROFILE_SUCCESS:
+            return {
+                loading: false,
+                success: true,
+                userInfo: action.payload
+            }
+        case USER_UPDATED_PROFILE_FAIL:
+            return {
+                loading: false,
+                error: action.payload
+            }
+        case USER_UPDATED_PROFILE_RESET:
+            return {}
 
         default:
             return state;

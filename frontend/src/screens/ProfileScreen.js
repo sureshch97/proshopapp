@@ -4,7 +4,7 @@ import { Form, Row, Col, FormLabel, FormControl, Button, Table } from 'react-boo
 import { LinkContainer } from 'react-router-bootstrap'
 import Loader from '../components/Loader'
 import Message from '../components/message'
-import { UpdateuserProfile, getuserDetails } from '../actions/userAction'
+import { UpdateuserProfile, getuserDetails, getUpdatedUserProfile } from '../actions/userAction'
 import { listMyOrders } from '../actions/orderAction'
 import { USER_UPDATE_PROFILE_RESET } from '../constants/userConstants'
 
@@ -29,10 +29,13 @@ const ProfileScreen = ({ location, history }) => {
 
   const userUpdateProfile = useSelector((state) => state.userUpdateProfile)
   const { success } = userUpdateProfile
+  const userUpdatedProfile = useSelector((state) => state.userUpdatedProfile)
+  const { success: successupdatedprofile } = userUpdatedProfile
 
   useEffect(() => {
 
     dispatch(listMyOrders())
+
 
   }, [])
 
@@ -42,13 +45,17 @@ const ProfileScreen = ({ location, history }) => {
     } else {
       if (!user || !user.name || success) {
         dispatch({ type: USER_UPDATE_PROFILE_RESET });
-        dispatch(getuserDetails('profile'));
+        //dispatch(getuserDetails('profile'));
+
+        dispatch(getUpdatedUserProfile())
 
       } else {
         setName(user.name)
         setEmail(user.email)
       }
     }
+
+
   }, [history, userInfo, user, dispatch, success])
 
   const onSubmitHandler = (e) => {
@@ -58,6 +65,7 @@ const ProfileScreen = ({ location, history }) => {
       setMessage('Passwords do not match')
     } else {
       dispatch(UpdateuserProfile({ id: user._id, name, email, password }))
+
     }
 
 
@@ -65,9 +73,9 @@ const ProfileScreen = ({ location, history }) => {
   return <Row>
     <Col md={4}>
       <h2>Update Profile</h2>
-      {message && <Message variant='danger'>{message}</Message>}
+      {message && <Message variant='danger'>{message}</Message>}{ }
+      {successupdatedprofile && <Message variant='success'>Profile Updated</Message>}
       {error && <Message variant='danger'>{error}</Message>}
-      {success && <Message variant='success'>Profile Updated</Message>}
       {loading && <Loader />}
       <Form onSubmit={onSubmitHandler}>
 
@@ -148,7 +156,7 @@ const ProfileScreen = ({ location, history }) => {
                 <td>{order.createdAt.substring(0, 10)}</td>
                 <td>{order.totalPrice}</td>
                 <td>
-                  {order.isPaid ? (
+                  {order.ispaid ? (
                     order.paidAt.substring(0, 10)
                   ) : (
                     <i className='fas fa-times' style={{ color: 'red' }}></i>
@@ -165,7 +173,7 @@ const ProfileScreen = ({ location, history }) => {
                   <LinkContainer to={`/order/${order._id}`}>
                     <Button className='btn-sm' variant='light'>
                       Details
-                      </Button>
+                    </Button>
                   </LinkContainer>
                 </td>
               </tr>

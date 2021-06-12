@@ -21,8 +21,7 @@ const authUser = asynchandler(async (req, res) => {
     })
 
   } else {
-    res.status(401);
-    throw new Error('Invalid Email or Password')
+    res.status(401).json({message:'Invalid Email or Password'})
   }
 });
 
@@ -37,8 +36,8 @@ const registerUser = asynchandler(async (req, res) => {
   const userExists = await User.findOne({ email })
 
   if (userExists) {
-    res.status(400)
-    throw new Error('User already exists')
+    res.status(400).json({message:'User already exists'})
+    
   }
 
   const user = await User.create({
@@ -66,7 +65,7 @@ const registerUser = asynchandler(async (req, res) => {
 // @route   GET /api/users/profile
 // @access  Public
 
-const userProfile = asynchandler(async (req, res) => {
+const getuserProfile = asynchandler(async (req, res) => {
 
   const user = await User.findById(req.user._id)
 
@@ -173,7 +172,7 @@ const deleteUser = asynchandler(async (req, res) => {
 
 
 // @desc    edit users
-// @route   DELETE /api/users/:id
+// @route   PUT /api/users/:id
 // @access  private/Admin
 
 const updateUser = asynchandler(async (req, res) => {
@@ -202,4 +201,4 @@ const updateUser = asynchandler(async (req, res) => {
 
 });
 
-export { authUser, userProfile, registerUser, UpdateuserProfile, users, deleteUser, updateUser }
+export { authUser, getuserProfile, registerUser, UpdateuserProfile, users, deleteUser, updateUser }

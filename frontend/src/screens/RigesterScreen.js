@@ -17,7 +17,7 @@ const RigesterScreen = ({ location, history }) => {
 
   const dispatch = useDispatch();
   const userRigester = useSelector(state => state.userRigester);
-  const { loading, userInfo, error } = userRigester
+  const { loading, userInfo, error, success } = userRigester
 
   const redirect = location.search ? location.search.split('=')[1] : '/'
 
@@ -34,7 +34,7 @@ const RigesterScreen = ({ location, history }) => {
       setMessage('Passwords do not match')
     } else {
       dispatch(register(name, email, password))
-      setMessage('Successfully Rigestered')
+
 
     }
 
@@ -44,6 +44,7 @@ const RigesterScreen = ({ location, history }) => {
     <FormContainer>
       <h1>Rigester Here</h1>
       {message && <Message variant='danger'>{message}</Message>}
+      {success && <Message variant='primary'>successfully Registered</Message>}
       {error && <Message variant='danger'>{error}</Message>}
       {loading && <Loader />}
       <Form onSubmit={onSubmitHandler}>
